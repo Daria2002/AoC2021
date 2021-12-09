@@ -1,8 +1,5 @@
 
-
-def f(arr):
-    arr[1] = 44
-
-arr = [1, 2, 3]
-f(arr)
-print(arr)
+signals = {}
+signals[1] = set('redlow')
+signals[2] = set('yellow')
+print(f'{signals[1] | signals[2]}')
