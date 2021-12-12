@@ -62,13 +62,15 @@ def small_cave_check(paths):
     return True
 
 def part2(paths, curr_position, curr_path, visit_counter):
+    if not small_cave_check(curr_path):
+        return 0
     if curr_position == 'end':
         if small_cave_check(curr_path):
             return 1
         return 0
     count = 0
     for potential_path in paths[curr_position]:
-        if potential_path == 'start' or (potential_path != "end" and ((potential_path not in paths) or (visit_counter[potential_path] > 2 and potential_path.islower()))):
+        if potential_path == 'start':
             continue
         tmp_path = list(curr_path)
         tmp_path.append(potential_path)
