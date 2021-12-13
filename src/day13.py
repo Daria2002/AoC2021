@@ -2,6 +2,33 @@ import os, sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from helper.funcs import *
 
+def part2(data, fold_instructions):
+    for fold_instruction in fold_instructions:
+        direction = fold_instruction[0]
+        value = int(fold_instruction[1])
+        if direction == 'y':
+            for i in range(value + 1, len(data)):
+                for j in range(0, len(data[i])):
+                    if data[i][j] == '#':
+                        data[value - 1 + (value + 1 - i)][j] = '#'
+                        data[i][j] = '.'
+        elif direction == 'x':
+            for i in range(0, len(data)):
+                for j in range(value + 1, len(data[i])):
+                    if data[i][j] == '#':
+                        data[i][value - 1 + (value + 1 - j)] = '#'
+                        data[i][j] = '.'
+    counter = 0
+    file2 = open(r"output\day13.txt","w+")
+    for i in range(0, len(data)):
+        row = []
+        for j in range(0, len(data[i])):
+            row.append(data[i][j])
+            if data[i][j] == '#':
+                counter += 1
+        file2.write(str(row) + '\n')
+    return counter
+
 def part1(data, fold_instruction):
     direction = fold_instruction[0]
     value = int(fold_instruction[1])
@@ -61,3 +88,4 @@ if __name__ == '__main__':
     rows = get_all_input_rows('day13.txt')
     data, fold_instructions = process_data(rows)
     print(f'part1 = {part1(data, fold_instructions[0])}')
+    print(f'part1 = {part2(data, fold_instructions)}')
