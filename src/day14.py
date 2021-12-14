@@ -27,28 +27,33 @@ def part1(polymer_template, pair_insertion_rules, steps):
 def part2(polymer_template, pair_insertion_rules, steps):
     pairs = []
     count_elements = {}
+    count_pairs = {}
+    for i in range(0, len(polymer_template) - 1):
+        pairs.append(polymer_template[i:i+2])
+        count_pairs[polymer_template[i:i+2]] = 1
+        if polymer_template[i] not in count_elements:
+            count_elements[polymer_template[i]] = 0
+        if polymer_template[i + 1] not in count_elements:
+            count_elements[polymer_template[i + 1]] = 0
+        count_elements[polymer_template[i]] += 1
+    if polymer_template[-1] not in count_elements:
+        count_elements[polymer_template[-1]] = 0
+    count_elements[polymer_template[-1]] += 1
     for step in range(0, steps):
+        new_count_pairs = {}
         print(f'Step {step}')
-        count_elements = {}
-        if step == 0:
-            for i in range(0, len(polymer_template) - 1):
-                pairs.append(polymer_template[i:i+2])
-        new_pairs = []
-        for i, pair_ in enumerate(pairs):
+        for pair_, pair_counter in count_pairs.items():
             insertion_el = pair_insertion_rules[pair_]
-            new_pairs.append(pair_[0] + insertion_el)
-            new_pairs.append(insertion_el + pair_[1])
-            if pair_[0] not in count_elements:
-                count_elements[pair_[0]] = 0
-            if pair_[1] not in count_elements:
-                count_elements[pair_[1]] = 0
             if insertion_el not in count_elements:
                 count_elements[insertion_el] = 0
-            if i == 0:
-                count_elements[pair_[0]] += 1
-            count_elements[pair_[1]] += 1
-            count_elements[insertion_el] += 1
-        pairs = new_pairs
+            if pair_[0] + insertion_el not in new_count_pairs:
+                new_count_pairs[pair_[0] + insertion_el] = 0
+            if insertion_el + pair_[1] not in new_count_pairs:
+                new_count_pairs[insertion_el + pair_[1]] = 0
+            new_count_pairs[pair_[0] + insertion_el] += pair_counter
+            new_count_pairs[insertion_el + pair_[1]] += pair_counter
+            count_elements[insertion_el] += pair_counter
+        count_pairs = dict(new_count_pairs)
     max_val, min_val = 0, sys.maxsize
     for el, count_val in count_elements.items():
         if count_val > max_val:
