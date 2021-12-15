@@ -29,8 +29,35 @@ def part1(matrix):
             cave.add_edge((x, y), neighbor, weight=neighbor_weight)
     return nx.dijkstra_path_length(cave, (0, 0), (len(matrix) - 1, len(matrix[0]) - 1), weight='weight')
 
+def increase_matrix(matrix):
+    bigger_matrix = []
+    matrix_len = len(matrix)
+    for row in matrix:
+        tmp_row = []
+        for col in row:
+            tmp_row.append(int(col))
+        for i in range(1, 5):
+            new_tmp_row = []
+            for k in range((i - 1) * matrix_len, i * matrix_len):
+                el = tmp_row[k]
+                num = (int(el) + 1) if (int(el) < 9) else 1
+                new_tmp_row.append(num)
+            tmp_row += new_tmp_row
+        bigger_matrix.append(tmp_row)
+    for row in range(matrix_len, 5 * matrix_len):
+        new_row = []
+        for col in range(0, 5 * matrix_len):
+            el = bigger_matrix[row - matrix_len][col] + 1
+            if el > 9:
+                el = 1
+            new_row.append(el)
+        bigger_matrix.append(new_row)
+    # print(bigger_matrix)
+    return bigger_matrix
+
 def part2(matrix):
-    return 0
+    bigger_matrix = increase_matrix(matrix)
+    return part1(bigger_matrix)
 
 if __name__ == '__main__':
     rows = get_all_input_rows('day15.txt')
