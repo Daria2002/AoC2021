@@ -1,16 +1,9 @@
-s1 = "NCNBCHB"
-s2 = "NBCCNBBBCBHCB"
-s3 = "NBBBCNCCNBBNBNBBCHBHHBCHB"
-s4 = "NBBNBNBBCCNBCNCCNBBNBBNBBBNBBNBBCBHCBHHNHCBBCBHCB"
-ss = [s1, s2, s3, s4]
+from functools import reduce
 
-def count_all_elements(s):
-    count_elements = {}
-    for el in s:
-        if el not in count_elements:
-            count_elements[el] = 0
-        count_elements[el] += 1
-    return count_elements
+arr = [1, 2, 3, 4, 5]
 
-for s in ss:
-    print(f'count of all elements = {count_all_elements(s)}')
+def my_add(a, b):
+    print(f'a: {a}, b: {b}')
+    return a + b
+
+print(f'arr = {reduce(my_add, arr)}')
